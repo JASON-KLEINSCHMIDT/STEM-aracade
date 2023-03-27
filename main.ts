@@ -337,6 +337,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite3, otherS
         false
         )
     }
+    scene.cameraShake(8, 500)
     myEnemy.setVelocity(0, 0)
     pause(2000)
     myEnemy.setVelocity(175, 175)
@@ -373,13 +374,21 @@ function enermySpawn () {
     tiles.placeOnRandomTile(myEnemy, assets.tile`start`)
     myEnemy.follow(mySprite, 175)
 }
+scene.onOverlapTile(SpriteKind.Player, assets.tile`我的貼圖0`, function (sprite, location) {
+    info.changeLifeBy(-1)
+    tiles.setTileAt(location, assets.tile`myTile0`)
+})
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile3`, function (sprite2, location2) {
     tiles.setTileAt(location2, assets.tile`myTile0`)
     info.changeScoreBy(1)
-    if (info.score() == 5 && info.life() == 5) {
+    if (info.score() >= 5 && info.life() >= 7) {
         game.showLongText("EXTRA 5 POINTS!", DialogLayout.Bottom)
         info.changeScoreBy(5)
     }
+})
+scene.onOverlapTile(SpriteKind.Player, assets.tile`我的貼圖`, function (sprite, location) {
+    info.changeLifeBy(1)
+    tiles.setTileAt(location, assets.tile`myTile0`)
 })
 let myEnemy: Sprite = null
 let hurt = false
